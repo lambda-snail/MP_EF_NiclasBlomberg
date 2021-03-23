@@ -10,16 +10,26 @@ namespace MP1.AssetTracker.Model
         /// <summary>
         /// The country in which the office is located.
         /// </summary>
-        public string Location { get; }
+        public string Location { get; set; }
 
         /// <summary>
         /// The string describing the cultrue of the country in which the office resides.
         /// </summary>
-        public string Culture { get; }
+        public string Culture {
+            get
+            {
+                return Culture;
+            }
+            private set
+            {
+                Culture = value;
+                OfficeLocalCulture = new CultureInfo(value);
+            }
+        }
 
-        public int OfficeID { get; }
+        public int OfficeID { get; private set; }
 
-        public CultureInfo OfficeLocalCulture { get; }
+        public CultureInfo OfficeLocalCulture { get; private set; }
 
         public Office(string location, string culture)
         {
@@ -28,8 +38,6 @@ namespace MP1.AssetTracker.Model
 
             ValidateStringProperty(culture, "Culture");
             Culture = culture;
-
-            OfficeLocalCulture = new CultureInfo(culture);
         }
 
         public override string ToString()

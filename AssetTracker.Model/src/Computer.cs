@@ -10,6 +10,8 @@ namespace MP1.AssetTracker.Model
         public string RAM { get; set; }
         public string Processor { get; set; }
 
+        public Computer() : base() { }
+
         public Computer(DateTime purchaseDate, DateTime expiryDate,
                         double price, string modelName, int officeID,
                         string operatingSystem, string ram, string processor) :

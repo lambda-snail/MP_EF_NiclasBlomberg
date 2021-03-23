@@ -9,6 +9,8 @@ namespace MP1.AssetTracker.Model
         public string PhoneOperator { get; set; }
         public string PhoneNumber { get; set; }
 
+        public Cellphone() : base() { }
+
         public Cellphone(DateTime purchaseDate, DateTime expiryDate,
                         double price, string modelName, int officeID,
                         string phoneOperator, string number) :

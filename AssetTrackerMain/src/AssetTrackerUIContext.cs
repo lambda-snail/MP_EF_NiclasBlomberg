@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using SCLI.Core;
+using MP1.AssetTracker.Model;
 
 namespace MP1.AssetTracker
 {

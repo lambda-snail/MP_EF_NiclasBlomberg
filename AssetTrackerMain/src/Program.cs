@@ -1,14 +1,18 @@
 ﻿
 using SCLI.Core;
+using MP1.AssetTracker.DataLayer;
 
 namespace MP1.AssetTracker
 {
     public class Program
     {
+        //public static string ConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = EfBloggy; Integrated Security = True";
         static void Main(string[] args)
         {
             SCLIMain ui = new SCLIMain();
-            AssetTrackerUIContext c = new AssetTrackerUIContext(ui, ui, new AssetRepository(), new OfficeRepository());
+
+            AssetTrackerDbContext database = new AssetTrackerDbContext();
+            AssetTrackerUIContext c = new AssetTrackerUIContext(ui, ui, new AssetRepository(database), new OfficeRepository(database));
 
             c.AddCommand("list", c.ListAllAssetsCommand);
             c.AddCommand("add", c.AddAssetCommand);

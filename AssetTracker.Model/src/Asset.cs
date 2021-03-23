@@ -12,6 +12,8 @@ namespace MP1.AssetTracker.Model
         public string ModelName { get; set; }
         public int OfficeID { get; private set; }
 
+        public Asset() : base() { }
+
         public Asset(DateTime purchaseDate, DateTime expiryDate, double price, string modelName, int officeID)
         {
             ValidateDates(purchaseDate, expiryDate);

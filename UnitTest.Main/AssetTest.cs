@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using MP1.AssetTracker;
+using MP1.AssetTracker.Model;
 
 namespace UnitTest.Main
 {
@@ -23,14 +23,14 @@ namespace UnitTest.Main
             Action negativePrice = () =>
                 {
                     price = -100;
-                    new Computer(id, purchaseDate, expiryDate, price, modelName, officeID, OS, RAM, Processor);
+                    new Computer(purchaseDate, expiryDate, price, modelName, officeID, OS, RAM, Processor);
                 };
 
             Action emptyStringProperty = () =>
                 {
                     modelName = "";
                     price = 100; // This was changed in previous action
-                    new Computer(id, purchaseDate, expiryDate, price, modelName, officeID, OS, RAM, Processor);
+                    new Computer(purchaseDate, expiryDate, price, modelName, officeID, OS, RAM, Processor);
                 };
 
             Assert.Throws<ArgumentException>(negativePrice);
