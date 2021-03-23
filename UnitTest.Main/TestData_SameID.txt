@@ -1,0 +1,2 @@
+﻿1,2017-08-15,2020-08-15,1500,MacBook,Computer,1,macOS,8GB,PowerPC
+1,2019-07-18,2022-07-18,400,iPhone,Cellphone,1,Au,+817655308287

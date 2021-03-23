@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AssetTracker.Model\AssetTracker.Model.csproj" />
+    <ProjectReference Include="..\AssetTracker.UI\AssetTracker.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
