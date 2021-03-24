@@ -24,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestData_NoErrorsInData.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TestData_SameID.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="TestData_WrongDate.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
