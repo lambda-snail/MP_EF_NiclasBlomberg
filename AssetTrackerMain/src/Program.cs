@@ -6,7 +6,7 @@ namespace MP1.AssetTracker
 {
     public class Program
     {
-        //public static string ConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = EfBloggy; Integrated Security = True";
+        //public static string ConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = AssetTracker.DB; Integrated Security = True";
         static void Main(string[] args)
         {
             SCLIMain ui = new SCLIMain();

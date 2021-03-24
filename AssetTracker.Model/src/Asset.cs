@@ -6,11 +6,11 @@ namespace MP1.AssetTracker.Model
     public abstract class Asset
     {
         public int AssetID { get; private set; }
-        public DateTime PurchaseDate { get; private set; }
-        public DateTime ExpiryDate { get; private set; }
-        public double Price { get; private set; }
+        public DateTime PurchaseDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
+        public double Price { get; set; }
         public string ModelName { get; set; }
-        public int OfficeID { get; private set; }
+        public int OfficeID { get; set; }
 
         public Asset() : base() { }
 
