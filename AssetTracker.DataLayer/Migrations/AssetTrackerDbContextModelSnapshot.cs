@@ -31,10 +31,11 @@ namespace AssetTracker.DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("ModelName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("OfficeID")
                         .HasColumnType("int");
@@ -43,7 +44,7 @@ namespace AssetTracker.DataLayer.Migrations
                         .HasColumnType("float");
 
                     b.Property<DateTime>("PurchaseDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.HasKey("AssetID");
 
@@ -77,10 +78,12 @@ namespace AssetTracker.DataLayer.Migrations
                     b.HasBaseType("MP1.AssetTracker.Model.Asset");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("PhoneOperator")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasDiscriminator().HasValue("Cellphone");
                 });
@@ -90,13 +93,16 @@ namespace AssetTracker.DataLayer.Migrations
                     b.HasBaseType("MP1.AssetTracker.Model.Asset");
 
                     b.Property<string>("OperatingSystem")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Processor")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("RAM")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasDiscriminator().HasValue("Computer");
                 });
