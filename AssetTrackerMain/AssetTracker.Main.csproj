@@ -18,10 +18,4 @@
     <ProjectReference Include="..\AssetTracker.UI\AssetTracker.UI.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Assets.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

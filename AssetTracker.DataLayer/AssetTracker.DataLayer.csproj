@@ -21,4 +21,13 @@
     <ProjectReference Include="..\AssetTracker.Model\AssetTracker.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DevelopmentResources\MOCK_DATA_CELLPHONE.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DevelopmentResources\MOCK_DATA_COMPUTER.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

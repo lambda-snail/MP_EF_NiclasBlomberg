@@ -12,17 +12,19 @@ namespace MP1.AssetTracker.Model
         /// </summary>
         public string Location { get; set; }
 
+        private string _culture;
+
         /// <summary>
         /// The string describing the cultrue of the country in which the office resides.
         /// </summary>
         public string Culture {
             get
             {
-                return Culture;
+                return _culture;
             }
             private set
             {
-                Culture = value;
+                _culture = value;
                 OfficeLocalCulture = new CultureInfo(value);
             }
         }

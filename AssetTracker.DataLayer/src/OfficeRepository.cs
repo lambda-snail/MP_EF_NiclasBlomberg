@@ -72,18 +72,5 @@ namespace MP1.AssetTracker.DataLayer
                 _db.SaveChanges();
             }
         }
-
-        /// <summary>
-        /// Hard-coded offices, should be OK as long as we only need three :)
-        /// </summary>
-        private void LoadOffices()
-        {
-            if(_db.Offices.Count() == 0)
-            {
-                AddOffice(new Office("Japan", "ja-JP"));
-                AddOffice(new Office("Sweden", "se-SE"));
-                AddOffice(new Office("France", "fr-FR"));
-            }
-        }
     }
 }

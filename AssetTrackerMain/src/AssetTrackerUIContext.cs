@@ -14,15 +14,15 @@ namespace MP1.AssetTracker
     /// </summary>
     public class AssetTrackerUIContext : Context
     {
-        public IAssetRepository assets { get; private set; }
+        public IAssetRepository Assets { get; private set; }
 
-        public IOfficeRepository offices { get; private set; }
+        public IOfficeRepository Offices { get; private set; }
 
         public AssetTrackerUIContext(IConsoleOutput output, IConsoleInput input, IAssetRepository r, IOfficeRepository o)
             : base(output, input, "")
         {
-            assets = r;
-            offices = o;
+            Assets = r;
+            Offices = o;
         }
 
         /// <summary>
@@ -30,7 +30,9 @@ namespace MP1.AssetTracker
         /// </summary>
         public bool ListAllAssetsCommand(string cmdName, string[] cmdArgs)
         {
-            int count = assets.GetAssets().Count();
+            var X = Assets.GetAssets().ToList();
+
+            int count = Assets.GetAssets().Count();
 
             if (count == 0)
             {
@@ -51,10 +53,10 @@ namespace MP1.AssetTracker
                 "Other info ...".PadRight(pad));
 
 
-            foreach (Asset a in assets.GetAssets()
+            foreach (Asset a in Assets.GetAssets()
                                        .OrderBy(a => a.OfficeID )
                                        .ThenBy(a => (a is Computer) ? 1 : 2) // Maybe a bit too "hacky"?
-                                       .ThenBy(a => a.PurchaseDate))
+                                       .ThenBy(a => a.PurchaseDate).Take(20))
             {
                 IConsoleOutput.Color color = IConsoleOutput.Color.WHITE;
                 if(a.ExpiryDate < DateTime.Now || a.ExpiryDate < DateTime.Now.AddMonths(3)) // Passed expiry date or 3 months left
@@ -72,8 +74,8 @@ namespace MP1.AssetTracker
                     a.PurchaseDate.ToShortDateString().PadRight(pad) +
                     a.ExpiryDate.ToShortDateString().PadRight(pad) +
                     //a.Price.ToString().PadRight(pricePad) +
-                    CurrencyConverter.PriceToString(a.Price, offices.GetOffice(a.OfficeID).OfficeLocalCulture).PadRight(pricePad) +
-                    offices.GetOffice(a.OfficeID).ToString().PadRight(pad),
+                    CurrencyConverter.PriceToString(a.Price, Offices.GetOffice(a.OfficeID).OfficeLocalCulture).PadRight(pricePad) +
+                    Offices.GetOffice(a.OfficeID).ToString().PadRight(pad),
                     color,
                     newLine:false);
 
@@ -128,16 +130,16 @@ namespace MP1.AssetTracker
             
             // Logic to get location
             OutputHandle.PutMessage("In which country is the office located?");
-            Office office = offices.GetOffice(InputHandle.ReadLine());
+            Office office = Offices.GetOffice(InputHandle.ReadLine());
             while(office == null)
             {
                 OutputHandle.PutMessage("Unknown country, please try again.", IConsoleOutput.Color.RED);
                 OutputHandle.PutMessage("Available options: ");
-                foreach(Office o in offices.GetOffices())
+                foreach(Office o in Offices.GetOffices())
                 {
                     OutputHandle.PutMessage(o.Location);
                 }
-                office = offices.GetOffice(InputHandle.ReadLine());
+                office = Offices.GetOffice(InputHandle.ReadLine());
             }
 
             OutputHandle.PutMessage($"Location set: {office}.");
@@ -250,7 +252,7 @@ namespace MP1.AssetTracker
 
             try
             {
-                assets.AddAsset(parameters);
+                Assets.AddAsset(parameters);
             }
             catch(Exception e)
             {

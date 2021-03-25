@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetTracker.UI", "AssetTra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest.Main", "UnitTest.Main\UnitTest.Main.csproj", "{687899CC-29D0-4CCE-8CD6-AA02F10761D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetTracker.DataLayer", "AssetTracker.DataLayer\AssetTracker.DataLayer.csproj", "{4188BC47-E8E6-4E4F-8807-6CC1DFDC6C70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetTracker.DataLayer", "AssetTracker.DataLayer\AssetTracker.DataLayer.csproj", "{4188BC47-E8E6-4E4F-8807-6CC1DFDC6C70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetTracker.Model", "AssetTracker.Model\AssetTracker.Model.csproj", "{31D8BB7F-E2A1-4A70-A94F-F78AD7052B51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetTracker.Model", "AssetTracker.Model\AssetTracker.Model.csproj", "{31D8BB7F-E2A1-4A70-A94F-F78AD7052B51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
