@@ -3,7 +3,8 @@
     public interface IConsoleOutput
     {
         /// <summary>
-        /// Sets the color of messages presented to the user.
+        /// Sets the level of severity of messages presented to the user. These are
+        /// put on the screen using different colors:
         /// </summary>
         public enum Color
         {

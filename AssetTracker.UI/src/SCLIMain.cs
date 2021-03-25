@@ -18,8 +18,9 @@ namespace SCLI.Core
     /// <returns>True if the operation was successfully completed.</returns>
     public delegate bool CommandHandle(string command, string[] args);
 
-    public class SCLIMain : IConsoleOutput, IConsoleInput
+    public class SCLIMain : IConsoleOutput, IAutoCompleteHandler, IUserInput
     {
+        public char[] Separators { get; set; } = new char[] { ' ', '\t', '/' };
         public Context CurrentContext
         {
             get
@@ -56,10 +57,10 @@ namespace SCLI.Core
 
             while (!ExitFlag)
             {
-                string[] input = GetInputFromUser();
+                string[] input = GetCommandFromUser();
                 if (input == null)
                 {
-                    Console.WriteLine("Error: Input field must not be empty");
+                    //Console.WriteLine("Error: Input field must not be empty");
                     continue;
                 }
 
@@ -75,32 +76,82 @@ namespace SCLI.Core
                     //Commands[command](command, args);
                     CurrentContext.Commands[command](command, args);
                 }
-                else
-                {
-                    PutMessage($"No command named '{command}' is available.", Color.YELLOW);
-                    continue;
-                }
             }
         }
 
-        public string[] GetInputFromUser()
+        /// <summary>
+        /// Reads one line of input from the user. This is a wrapper around Console.ReadLine().
+        /// </summary>
+        public string GetRawStringInputFromUser()
         {
-            PutMessage(CurrentContext.PromptSymbl, Color.WHITE, false);
-            string[] output = Console.ReadLine().Split(CurrentContext.IgnoreChars);
+            return ReadLine.Read(CurrentContext.PromptSymbol);
+        }
+
+        /// <summary>
+        /// Gets one line of input from the user, splits the line by whitespace
+        /// and returns the resulting tokens in a string array. This is intended as
+        /// a simple parser for commands.
+        /// 
+        /// To get the entire string including whitespace, use GetRawStringInputFromUser.
+        /// 
+        /// To get normal input from the user, use GetEditableInputWithDefaultText.
+        /// </summary>
+        public string[] GetCommandFromUser(string defaultString = "")
+        {
+            string[] input = ReadLine.Read(CurrentContext.PromptSymbol).Split(Separators);
 
             bool IsEmpty = true;
-            foreach (string str in output)
+            foreach (string str in input)
             {
-                if (!(string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str)))
+                if (!string.IsNullOrEmpty(str))
                     IsEmpty = false;
             }
 
-            return IsEmpty ? null : output;
+            return IsEmpty ? null : input;
         }
 
-        public string ReadLine()
+        /// <summary>
+        /// Obtains a string from the user, possibly empty. The user can edit the input by removing characters
+        /// with backspace before submitting with enter.
+        /// </summary>
+        /// <param name="defaultString">A string of default input that the user can then edit before submitting.</param>
+        public string GetEditableInputWithDefaultText(string defaultString = "")
         {
-            return Console.ReadLine();
+            int editablePositionStart = CurrentContext.PromptSymbol.Length;
+            PutMessage(CurrentContext.PromptSymbol + defaultString, newLine: false);
+            ConsoleKeyInfo info;
+
+            List<char> editableCharacterBuffer = new List<char>();
+            if (string.IsNullOrEmpty(defaultString) == false)
+            {
+                editableCharacterBuffer.AddRange(defaultString.ToCharArray());
+            }
+
+            while (true)
+            {
+                info = Console.ReadKey(true);
+                if (info.Key == ConsoleKey.Backspace && Console.CursorLeft > editablePositionStart)
+                {
+                    editableCharacterBuffer.RemoveAt(editableCharacterBuffer.Count - 1);
+                    Console.CursorLeft -= 1;
+                    Console.Write(' ');
+                    Console.CursorLeft -= 1;
+
+                }
+                else if (info.Key == ConsoleKey.Enter)
+                {
+                    Console.Write(Environment.NewLine); break;
+                }
+                else if (char.IsLetterOrDigit(info.KeyChar) ||
+                         char.IsWhiteSpace(info.KeyChar) ||
+                         char.IsPunctuation(info.KeyChar) ||
+                         char.IsSymbol(info.KeyChar))
+                {
+                    Console.Write(info.KeyChar);
+                    editableCharacterBuffer.Add(info.KeyChar);
+                }
+            }
+            return new string(editableCharacterBuffer.ToArray());
         }
 
         /// <summary>
@@ -117,7 +168,7 @@ namespace SCLI.Core
 
             ContextStack.Push(c);
 
-            if(!c.Commands.ContainsKey("help"))
+            if (!c.Commands.ContainsKey("help"))
                 c.AddCommand("help", HelpCommand);
 
             if (!c.Commands.ContainsKey("clear"))
@@ -166,7 +217,7 @@ namespace SCLI.Core
             {
                 Console.Write('\t');
             }
-            
+
             if (newLine)
             {
                 Console.WriteLine(msg);
@@ -177,6 +228,23 @@ namespace SCLI.Core
             }
 
             Console.ResetColor();
+        }
+
+        /// <summary>
+        /// This method is responsible for making the tab-completion work. When tab is pressed, this
+        /// method retreives a list of suggestions based on the current context.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string[] GetSuggestions(string text, int index)
+        {
+            return CurrentContext.Commands.Keys.Where(c => c.ToLower().StartsWith(text.ToLower())).ToArray();
+        }
+
+        public void NewLine()
+        {
+            Console.WriteLine();
         }
 
         public void ClearScreen()
@@ -200,7 +268,14 @@ namespace SCLI.Core
             CurrentContext.DecreaseIndentation();
         }
 
-
+        /// <summary>
+        /// Implements tab-completion logic.
+        /// </summary>
+        private void OnTabPressed()
+        {
+            //Console.In.ReadLine();
+            PutMessage("Tab was pressed!");
+        }
 
         private bool HelpCommand(string commandName, string[] args)
         {
@@ -226,6 +301,22 @@ namespace SCLI.Core
         {
             ExitFlag = true;
             return true;
+        }
+
+        /// <summary>
+        /// Turns off autocompletion for the current session.
+        /// </summary>
+        public void StopAutoCompletion()
+        {
+            ReadLine.AutoCompletionHandler = null;
+        }
+
+        /// <summary>
+        /// Turns on autocompletion for the current session.
+        /// </summary>
+        public void StartAutoCompletion()
+        {
+            ReadLine.AutoCompletionHandler = this;
         }
     }
 }

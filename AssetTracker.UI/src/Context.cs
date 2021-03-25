@@ -11,7 +11,7 @@ namespace SCLI.Core
     /// </summary>
     public class Context
     {
-        public string PromptSymbl { get; set; }
+        public string PromptSymbol { get; set; }
         public Dictionary<string, CommandHandle> Commands { get; private set; }
 
         /// <summary>
@@ -19,14 +19,14 @@ namespace SCLI.Core
         /// one tab character (\t) for simplicity.
         /// </summary>
         public uint IndentationLevel { get; private set; }
-        public readonly char[] IgnoreChars = new char[] { ' ', '\n', '\r', '\f', '\t' };
+        //public char[] Separators { get; set; } = new char [] { ' ', '\t', '/' };
         
         /// <summary>
         /// The interface to use when putting messages to the screen.
         /// </summary>
         protected IConsoleOutput OutputHandle { get; set; }
 
-        protected IConsoleInput InputHandle { get; set;  }
+        protected IUserInput InputHandle { get; set; }
 
         protected string OnScreenClearMessage { get; set; }
 
@@ -34,15 +34,15 @@ namespace SCLI.Core
         /// Creates a new context that writes output to the given IConsoleOutput object.
         /// </summary>
         /// <param name="clearMessage">A default message shown every time the screen is cleared.</param>
-        public Context(IConsoleOutput console, IConsoleInput input, string clearMessage = "")
+        public Context(IConsoleOutput console, IUserInput inputHandle, string clearMessage = "")
         {
             Commands = new();
-            PromptSymbl = " > ";
+            PromptSymbol = "-> ";
             IndentationLevel = 0;
             OnScreenClearMessage = clearMessage ?? "";
 
             OutputHandle = console;
-            InputHandle = input;
+            InputHandle = inputHandle;
         }
 
         /// <summary>

@@ -68,5 +68,10 @@ namespace MP1.AssetTracker.Model
         {
             _ = location ?? throw new ArgumentNullException("Location null.");
         }
+
+        public Asset ShallowCopy()
+        {
+            return (Asset) MemberwiseClone();
+        }
     }
 }

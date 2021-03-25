@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 
 using MP1.AssetTracker.Model;
+using MP1.AssetTracker.Main.UIItems;
 
 namespace MP1.AssetTracker
 {
@@ -23,10 +24,9 @@ namespace MP1.AssetTracker
 
             // UI stuff
             SCLIMain ui = new SCLIMain();
-            AssetTrackerUIContext c = new AssetTrackerUIContext(ui, ui, new AssetRepository(_database), new OfficeRepository(_database));
-            c.AddCommand("list", c.ListAllAssetsCommand);
-            c.AddCommand("add", c.AddAssetCommand);
-            ui.PushContext(c);
+
+            AssetTrackerMainMenu main = new AssetTrackerMainMenu(ui,ui, new AssetRepository(_database), new OfficeRepository(_database));
+            ui.PushContext(main);
 
             ui.PutMessage("Welcome to the AssetTracker miniproject. Type 'help' to see available commands.");
             ui.Run();

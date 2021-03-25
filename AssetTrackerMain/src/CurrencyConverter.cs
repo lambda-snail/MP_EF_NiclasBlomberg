@@ -34,7 +34,11 @@ namespace MP1.AssetTracker
                 { "fr-FR", "EUR" }
             };
 
-        public static string PriceToString(double usd, CultureInfo country)
+        /// <summary>
+        /// Convert a given sum of USD into the local currency defined by the CultureInfo. Optionally the number 
+        /// of decimals in the output can be specified (defaults to 2 decimals).
+        /// </summary>
+        public static string PriceToString(double usd, CultureInfo country, int decimals = 2)
         {
             if(country == null)
             {
@@ -45,7 +49,7 @@ namespace MP1.AssetTracker
                 throw new ArgumentException("Could not find currency for: " + country.Name);
             }
 
-            return $"{CurrencySymbolTable[country.Name]} {(usd * CurrencyConversionTable[country.Name])}";
+            return $"{CurrencySymbolTable[country.Name]} {(usd * CurrencyConversionTable[country.Name]).ToString($"N{decimals}")}";
                 
         }
     }
