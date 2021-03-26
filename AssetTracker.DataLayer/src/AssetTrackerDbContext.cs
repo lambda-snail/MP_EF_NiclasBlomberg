@@ -17,11 +17,8 @@ namespace MPEF.AssetTracker.DataLayer
             ConnectionString = connectionString;
         }
 
-        public AssetTrackerDbContext() : base() {}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            ConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = AssetTrackerDB; Integrated Security = True";
             optionsBuilder.UseSqlServer(ConnectionString);
         }
 

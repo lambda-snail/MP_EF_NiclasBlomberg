@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 
 using MPEF.AssetTracker.Model;
-using MPEF.AssetTracker.Main.UIItems;
+using MPEF.AssetTracker.Main.UIControllers;
 
 namespace MPEF.AssetTracker
 {
@@ -18,7 +18,10 @@ namespace MPEF.AssetTracker
         static void Main(string[] args)
         {
             // EF Core stuff
-            _database = new AssetTrackerDbContext();
+            //_database = new AssetTrackerDbContext();
+            var factory = new AssetTrackerContextFactory();
+
+            _database = factory.CreateDbContext(null);
             _database.Database.EnsureCreated();
             LoadMockData();
 
