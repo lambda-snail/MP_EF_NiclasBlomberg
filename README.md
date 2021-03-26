@@ -6,7 +6,7 @@ This mini project also uses some code from my console UI project, which can be f
 
 ## Requirements
 
-The project uses the NuGet package "Readline".
+The project uses the NuGet package "Readline". (https://www.nuget.org/packages/ReadLine/)
 
 # Minimal Manual
 
@@ -22,9 +22,9 @@ The project uses the NuGet package "Readline".
 
 * The list-not-expired command will list all assets that have not yet expired. Assets will still be color-coded as usual.
 
-* Since the example dataset is large, the list family of commands display a page of a few assets at once. They allow allow the user to scroll through the pages by typing "up" or "down".
+* Since the example dataset is large, the list family of commands displays a page of a few assets at once. They allow allow the user to scroll through the pages by typing "up" or "down".
 
-* It is also possible to go directly to a page py typing in the number of that page.
+* It is also possible to go directly to a page by typing in the number of that page.
 
 ## reports
 
@@ -38,7 +38,7 @@ The following things have changed from the MP1 version:
 * Repository classes now support the full CRUD set of methods.
 * Asset and Office classes have been moved to a Model layer. This layer also includes interfaces for allownig the repositories to talk to the Main Layer.
 
-# Resources
+# Resources (for me)
 
 How to configure inheritance using the fluent API:
 * https://docs.microsoft.com/en-us/ef/core/modeling/inheritance
