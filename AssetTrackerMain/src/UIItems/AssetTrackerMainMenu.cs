@@ -15,8 +15,8 @@ namespace MP1.AssetTracker.Main.UIItems
     /// </summary>
     public class AssetTrackerMainMenu : Context
     {
-        protected IAssetRepository Assets { get; private set; }
-        protected IOfficeRepository Offices { get; private set; }
+        public IAssetRepository Assets { get; }
+        public IOfficeRepository Offices { get; }
 
         public AssetTrackerMainMenu(IConsoleOutput output, IUserInput inputHandle, IAssetRepository assetRepo, IOfficeRepository officeRepo)
             : base(output, inputHandle, "")
@@ -27,6 +27,7 @@ namespace MP1.AssetTracker.Main.UIItems
             AddCommand("list", ListAllAssetsCommand);
             AddCommand("add", AddAssetCommand); 
             AddCommand("update", UpdateAssetCommand);
+            AddCommand("delete", DeleteAssetCommand);
         }
 
         /// <summary>
@@ -376,7 +377,28 @@ namespace MP1.AssetTracker.Main.UIItems
                 Assets.UpdateAsset(changeTarget);
                 OutputHandle.PutMessage("Changes saved.");
                 return true;
+            }   
+        }
+
+        public bool DeleteAssetCommand(string cmdName, string[] cmdArgs)
+        {
+            OutputHandle.PutMessage("Enter the id of the asset you wish to delete.");
+
+            int id = 0;
+            while (!int.TryParse(InputHandle.GetEditableInputWithDefaultText(), out id))
+            {
+                OutputHandle.PutMessage("Please enter a valid number.", IConsoleOutput.Color.YELLOW);
             }
+
+            if(Assets.GetAsset(id) == null)
+            {
+                OutputHandle.PutMessage("The provided id does not exist in the system.", IConsoleOutput.Color.YELLOW);
+                return false;
+            }
+
+            Assets.DeleteAsset(id);
+
+            return true;
         }
     }
 }
