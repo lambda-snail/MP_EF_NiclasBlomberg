@@ -45,9 +45,13 @@ namespace MPEF.AssetTracker.Main.UIControllers
             ReportGenerator = new ReportGenerationCommand(outputHandle, inputHandle, assetRepo, officeRepo);
 
             AddCommand("add", AddAssetCommand.AddAssetCommand);
-            AddCommand("list", ListAssetsCommand.ListAllAssetsCommand);
+            AddCommand("list", ListAssetsCommand.ListAllAssetsCommand); // Alias for list-all
+            AddCommand("list-all", ListAssetsCommand.ListAllAssetsCommand);
+            AddCommand("list-not-expired", ListAssetsCommand.ListNotExpiredAssetsCommand);
             AddCommand("update", UpdateAssetsCommand.UpdateAssetCommand);
             AddCommand("delete", DeleteAssetsCommand.DeleteAssetCommand);
+
+            
 
             AddCommand("reports", ReportGenerator.GenerateReport);
         }

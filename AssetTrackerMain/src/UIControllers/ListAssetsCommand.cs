@@ -3,6 +3,7 @@ using SCLI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace MPEF.AssetTracker.Main.UIControllers
 {
@@ -20,6 +21,18 @@ namespace MPEF.AssetTracker.Main.UIControllers
 
         public bool ListAllAssetsCommand(string cmdName, string[] cmdArgs)
         {
+            ListFiltered(a => true); // No filter for list all
+            return true;
+        }
+
+        public bool ListNotExpiredAssetsCommand(string cmdName, string[] cmdArgs)
+        {
+            ListFiltered(a => DateTime.Now < a.ExpiryDate); // No filter for list all
+            return true;
+        }
+
+        private bool ListFiltered(Expression<Func<Asset, bool>> predicate)
+        {
             if (Assets.Count == 0)
             {
                 OutputHandle.PutMessage("No assets in database.", IConsoleOutput.Color.GREEN);
@@ -27,13 +40,14 @@ namespace MPEF.AssetTracker.Main.UIControllers
             }
 
             var query = Assets.GetQueriable()
-                        //.OrderBy(a => Offices.GetOffice(a.OfficeID).Location)
-                        .OrderBy(a => a.OfficeID)
-                        .ThenBy(a => a.PurchaseDate);
+                            .Where(predicate)
+                            //.OrderBy(a => Offices.GetOffice(a.OfficeID).Location)
+                            .OrderBy(a => a.OfficeID)
+                            .ThenBy(a => a.PurchaseDate);
 
             // Used when scrolling
             int pageSize = 20;
-            int totalPageNum = Assets.Count / pageSize;
+            int totalPageNum = query.Count() / pageSize; // Is there no better way than executing the query here?
             int currentPageIndex = 0;
 
             OutputHandle.PutMessage("Enter a number to go to that page. Type 'up' or 'down' to scroll up or down.", IConsoleOutput.Color.GREEN);
