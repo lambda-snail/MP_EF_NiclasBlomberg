@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using MP1.AssetTracker.Model;
+using MPEF.AssetTracker.Model;
 using System;
 
-namespace MP1.AssetTracker.DataLayer
+namespace MPEF.AssetTracker.DataLayer
 {
     public class AssetTrackerDbContext : DbContext
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MP1.AssetTracker.Model
+namespace MPEF.AssetTracker.Model
 {
     public class Computer : Asset
     {

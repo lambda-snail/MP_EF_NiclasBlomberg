@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace MP1.AssetTracker
+namespace MPEF.AssetTracker
 {
     /// <summary>
     /// Class responsible for converting between different currencies, and also

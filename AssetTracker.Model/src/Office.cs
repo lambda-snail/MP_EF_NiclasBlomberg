@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace MP1.AssetTracker.Model
+namespace MPEF.AssetTracker.Model
 {
 
     public class Office

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using MP1.AssetTracker.Model;
+using MPEF.AssetTracker.Model;
 
-namespace MP1.AssetTracker.DataLayer
+namespace MPEF.AssetTracker.DataLayer
 {
     /// <summary>
     /// A class that abstracts the storage and retreival of Office objects.

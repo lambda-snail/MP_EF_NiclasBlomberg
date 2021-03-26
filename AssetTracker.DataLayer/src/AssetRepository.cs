@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MP1.AssetTracker.Model;
+using MPEF.AssetTracker.Model;
 
-namespace MP1.AssetTracker.DataLayer
+namespace MPEF.AssetTracker.DataLayer
 {
     public class AssetRepository : IAssetRepository
     {

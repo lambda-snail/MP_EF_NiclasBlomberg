@@ -1,14 +1,14 @@
 ﻿
 using SCLI.Core;
-using MP1.AssetTracker.DataLayer;
+using MPEF.AssetTracker.DataLayer;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 
-using MP1.AssetTracker.Model;
-using MP1.AssetTracker.Main.UIItems;
+using MPEF.AssetTracker.Model;
+using MPEF.AssetTracker.Main.UIItems;
 
-namespace MP1.AssetTracker
+namespace MPEF.AssetTracker
 {
     public class Program
     {

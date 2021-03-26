@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MP1.AssetTracker.Model
+namespace MPEF.AssetTracker.Model
 {
     /// <summary>
     /// An AssetRepository is responsible for saving and loading repositories,

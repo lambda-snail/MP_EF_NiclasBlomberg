@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using MP1.AssetTracker.Model;
+using MPEF.AssetTracker.Model;
 
 namespace UnitTest.Main
 {

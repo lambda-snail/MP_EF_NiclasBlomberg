@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace MP1.AssetTracker.Model
+namespace MPEF.AssetTracker.Model
 {
     public abstract class Asset
     {

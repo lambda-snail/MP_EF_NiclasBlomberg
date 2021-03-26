@@ -5,8 +5,8 @@ using System.Linq;
 
 using Xunit;
 
-using MP1.AssetTracker.DataLayer;
-using MP1.AssetTracker.Model;
+using MPEF.AssetTracker.DataLayer;
+using MPEF.AssetTracker.Model;
 
 
 namespace UnitTest.Main
