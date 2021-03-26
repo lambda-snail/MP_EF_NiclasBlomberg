@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using MPEF.AssetTracker.Model;
 
 namespace MPEF.AssetTracker.DataLayer
@@ -81,9 +82,14 @@ namespace MPEF.AssetTracker.DataLayer
             return _db.Assets.ToList();
         }
 
-        public IEnumerable<Asset> GetAssetsPaged(int pageSize, int pageIndex)
+        public IEnumerable<Asset> GetAssets(Func<Asset, bool> predicate)
         {
-            return _db.Assets.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+            return _db.Assets.Where(predicate).ToList();
+        }
+
+        public IQueryable<Asset> GetQueriable()
+        {
+            return _db.Assets;
         }
 
         public void UpdateAsset(Asset asset)

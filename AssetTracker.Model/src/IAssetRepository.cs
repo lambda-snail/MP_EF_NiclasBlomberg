@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace MPEF.AssetTracker.Model
 {
@@ -54,10 +56,16 @@ namespace MPEF.AssetTracker.Model
         IEnumerable<Asset> GetAssets();
 
         /// <summary>
-        /// Returns a subset of all assets offset pageNum into the database. Useful for scrolling through the data.
-        /// pageIndex is zero-indexed.
+        /// Returns a subset of all assets, filtered by the given lambda expression.
         /// </summary>
-        IEnumerable<Asset> GetAssetsPaged(int pageSize, int pageIndex);
+        IEnumerable<Asset> GetAssets(Func<Asset, bool> predicate);
+
+        /// <summary>
+        /// Returns an IQueryable pointing to the underlying Asset collection. This is useful when
+        /// an object that can participate in Linq expressions is needed, and deferred execution can
+        /// be taken advantage of.
+        /// </summary>
+        System.Linq.IQueryable<Asset> GetQueriable();
 
         /// <summary>
         /// Lets the system know that a given Asset has been changed.
