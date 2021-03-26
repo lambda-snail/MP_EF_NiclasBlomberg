@@ -18,7 +18,6 @@ namespace MPEF.AssetTracker.Main.UIControllers
         public ListAssetsCommand(IConsoleOutput outputHandle, IUserInput inputHandle, IAssetRepository assetRepo, IOfficeRepository officeRepo)
             : base(outputHandle, inputHandle, assetRepo, officeRepo) { }
 
-
         public bool ListAllAssetsCommand(string cmdName, string[] cmdArgs)
         {
             if (Assets.Count == 0)
@@ -27,10 +26,18 @@ namespace MPEF.AssetTracker.Main.UIControllers
                 return true;
             }
 
+            var query = Assets.GetQueriable()
+                        //.OrderBy(a => Offices.GetOffice(a.OfficeID).Location)
+                        .OrderBy(a => a.OfficeID)
+                        .ThenBy(a => a.PurchaseDate);
+
             // Used when scrolling
             int pageSize = 20;
             int totalPageNum = Assets.Count / pageSize;
             int currentPageIndex = 0;
+
+            OutputHandle.PutMessage("Enter a number to go to that page. Type 'up' or 'down' to scroll up or down.", IConsoleOutput.Color.GREEN);
+            OutputHandle.PutMessage("Type anything else to exit.", IConsoleOutput.Color.GREEN);
 
             // Header
             OutputHandle.PutMessage(
@@ -42,15 +49,15 @@ namespace MPEF.AssetTracker.Main.UIControllers
                 "Office Location".PadRight(Pad) +
                 "Other info ...".PadRight(Pad));
 
+            ShowPage(query, pageSize, currentPageIndex);
+
             // Let user scroll up or down among the pages
             // Loop until user is finished
             string input = "";
             bool notDone = true;
             while(notDone)
             {
-                ShowPage(pageSize, currentPageIndex);
                 OutputHandle.PutMessage($"Displaying page {currentPageIndex + 1} of {totalPageNum}.");
-                OutputHandle.PutMessage("Enter a number to go to that page. Type 'up' or 'down' to scroll up or down.");
 
                 input = InputHandle.GetEditableInputWithDefaultText( currentPageIndex==0 ? "down" : "" ).ToLower();
 
@@ -58,12 +65,12 @@ namespace MPEF.AssetTracker.Main.UIControllers
                 {
                     if(currentPageIndex + 1 >= totalPageNum)
                     {
-                        OutputHandle.PutMessage("No more assets. Aborting list.", IConsoleOutput.Color.GREEN);
-                        return true;
+                        OutputHandle.PutMessage("No more assets.", IConsoleOutput.Color.GREEN);
                     } 
                     else
                     {
                         currentPageIndex++;
+                        ShowPage(query, pageSize, currentPageIndex);
                     }
                 }
                 else if(input == "up")
@@ -75,13 +82,15 @@ namespace MPEF.AssetTracker.Main.UIControllers
                     else
                     {
                         currentPageIndex--;
+                        ShowPage(query, pageSize, currentPageIndex);
                     }
                 }
                 else if(int.TryParse(input, out int userSelectedPage))
                 {
-                    if(userSelectedPage > 0 && userSelectedPage < totalPageNum)
+                    if(userSelectedPage > 0 && userSelectedPage <= totalPageNum)
                     {
                         currentPageIndex = userSelectedPage - 1; // index is zero-based, but index in ui is not
+                        ShowPage(query, pageSize, currentPageIndex);
                     }
                     else
                     {
@@ -99,23 +108,20 @@ namespace MPEF.AssetTracker.Main.UIControllers
             return true;
         }
 
-        private void ShowPage(int pageSize, int pageIndex)
+        private void ShowPage(IQueryable<Asset> assets, int pageSize, int pageIndex)
         {
-            IEnumerable<Asset> page = Assets.GetAssetsPaged(pageSize, pageIndex);
+            IEnumerable<Asset> page = assets.Skip(pageSize * pageIndex).Take(pageSize).ToList();
 
             foreach (Asset a in page)
-                                       //.OrderBy(a => a.OfficeID)
-                                       //.ThenBy(a => (a is Computer) ? 1 : 2) // Maybe a bit too "hacky"?
-                                       //.ThenBy(a => a.PurchaseDate))
             {
                 IConsoleOutput.Color color = IConsoleOutput.Color.WHITE;
                 if (a.ExpiryDate < DateTime.Now || a.ExpiryDate < DateTime.Now.AddMonths(3)) // Passed expiry date or 3 months left
                 {
-                    color = IConsoleOutput.Color.RED; // red
+                    color = IConsoleOutput.Color.RED;
                 }
                 else if (a.ExpiryDate < DateTime.Now.AddMonths(6))
                 {
-                    color = IConsoleOutput.Color.YELLOW; // red
+                    color = IConsoleOutput.Color.YELLOW;
                 }
 
                 OutputHandle.PutMessage(
