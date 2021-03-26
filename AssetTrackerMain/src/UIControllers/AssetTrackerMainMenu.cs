@@ -6,7 +6,7 @@ using SCLI.Core;
 using MPEF.AssetTracker.Model;
 using System.Reflection;
 
-namespace MPEF.AssetTracker.Main.UIItems
+namespace MPEF.AssetTracker.Main.UIControllers
 {
     /// <summary>
     /// This class is responsible for providing the context for the following commands:

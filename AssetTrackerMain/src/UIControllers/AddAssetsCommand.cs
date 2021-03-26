@@ -3,7 +3,7 @@ using SCLI.Core;
 using System;
 using System.Collections.Generic;
 
-namespace MPEF.AssetTracker.Main.UIItems
+namespace MPEF.AssetTracker.Main.UIControllers
 {
     class AddAssetsCommand : AssetTrackerCommandBase
     {

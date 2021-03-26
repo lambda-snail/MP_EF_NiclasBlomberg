@@ -3,7 +3,7 @@ using SCLI.Core;
 using System;
 using System.Reflection;
 
-namespace MPEF.AssetTracker.Main.UIItems
+namespace MPEF.AssetTracker.Main.UIControllers
 {
     public class UpdateAssetsCommand : AssetTrackerCommandBase
     {

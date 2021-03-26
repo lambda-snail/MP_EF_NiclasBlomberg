@@ -1,7 +1,7 @@
 ﻿using MPEF.AssetTracker.Model;
 using SCLI.Core;
 
-namespace MPEF.AssetTracker.Main.UIItems
+namespace MPEF.AssetTracker.Main.UIControllers
 {
     public class AssetTrackerCommandBase
     {
