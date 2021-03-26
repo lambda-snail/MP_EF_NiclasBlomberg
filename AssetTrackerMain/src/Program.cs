@@ -28,6 +28,8 @@ namespace MPEF.AssetTracker
             AssetTrackerMainMenu main = new AssetTrackerMainMenu(ui,ui, new AssetRepository(_database), new OfficeRepository(_database));
             ui.PushContext(main);
 
+            ui.StartAutoCompletion();
+
             ui.PutMessage("Welcome to the AssetTracker miniproject. Type 'help' to see available commands.");
             ui.Run();
         }

@@ -12,8 +12,12 @@ namespace MPEF.AssetTracker.Main.UIControllers
     /// This class is responsible for providing the context for the following commands:
     /// add  - to add a new asset to the system.
     /// list - to list all assets in the system.
+    /// list-all - same as list
+    /// list-not-expired - lists all assets that have not expired yet.
     /// update - updates an asset
     /// delete - deletes an asset
+    /// 
+    /// reports - babsic statistics about the system
     /// 
     /// These commands are implemented in their own classes to keep responsibilities separate.
     /// </summary>
@@ -50,8 +54,6 @@ namespace MPEF.AssetTracker.Main.UIControllers
             AddCommand("list-not-expired", ListAssetsCommand.ListNotExpiredAssetsCommand);
             AddCommand("update", UpdateAssetsCommand.UpdateAssetCommand);
             AddCommand("delete", DeleteAssetsCommand.DeleteAssetCommand);
-
-            
 
             AddCommand("reports", ReportGenerator.GenerateReport);
         }
