@@ -19,7 +19,7 @@ namespace MPEF.AssetTracker
             // EF Core stuff
             var factory = new AssetTrackerContextFactory();
             _database = factory.CreateDbContext(null);
-            _database.Database.EnsureCreated();
+
             LoadMockData();
 
             // UI stuff

@@ -13,7 +13,9 @@ namespace MPEF.AssetTracker.DataLayer
         public string ConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = AssetTrackerDB; Integrated Security = True";
         public AssetTrackerDbContext CreateDbContext(string[] args)
         {
-            return new AssetTrackerDbContext(ConnectionString);
+            AssetTrackerDbContext db = new AssetTrackerDbContext(ConnectionString);
+            db.Database.Migrate();
+            return db;
         }
     }
 }
