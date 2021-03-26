@@ -15,7 +15,7 @@ namespace MPEF.AssetTracker.Main.UIControllers
         /// <returns></returns>
         public bool GenerateReport(string cmdName, string[] cmdArgs)
         {
-            int assetCount = Assets.GetAssets().Count();
+            int assetCount = Assets.Count;
             
             int numExpiredAssets = Assets.GetAssets()
                                    .Where(a => DateTime.Now < a.ExpiryDate)

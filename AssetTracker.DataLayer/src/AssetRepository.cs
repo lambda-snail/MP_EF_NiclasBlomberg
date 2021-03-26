@@ -9,6 +9,14 @@ namespace MPEF.AssetTracker.DataLayer
     {
         private AssetTrackerDbContext _db;
 
+        public int Count 
+        { 
+            get
+            {
+                return _db.Assets.Count();
+            }
+        }
+
         public AssetRepository(AssetTrackerDbContext database) 
         {
             if(database == null)
@@ -63,9 +71,6 @@ namespace MPEF.AssetTracker.DataLayer
             _db.SaveChanges();
         }
 
-        /// <summary>
-        /// Retreive the Asset with the specified id. If no such Asset exists, the method returns null.
-        /// </summary>
         public Asset GetAsset(int id)
         {
             return _db.Assets.Find(id);
@@ -74,6 +79,11 @@ namespace MPEF.AssetTracker.DataLayer
         public IEnumerable<Asset> GetAssets()
         {
             return _db.Assets.ToList();
+        }
+
+        public IEnumerable<Asset> GetAssetsPaged(int pageSize, int pageIndex)
+        {
+            return _db.Assets.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
 
         public void UpdateAsset(Asset asset)

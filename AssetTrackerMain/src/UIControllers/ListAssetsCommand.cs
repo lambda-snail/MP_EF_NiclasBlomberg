@@ -1,45 +1,112 @@
 ﻿using MPEF.AssetTracker.Model;
 using SCLI.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MPEF.AssetTracker.Main.UIControllers
 {
     class ListAssetsCommand : AssetTrackerCommandBase
     {
-        public ListAssetsCommand(IConsoleOutput outputHandle, IUserInput inputHandle, IAssetRepository assetRepo, IOfficeRepository officeRepo)
-            : base(outputHandle, inputHandle, assetRepo, officeRepo) { }
+        // Constants determining padding
+        static int Pad = 16;
+        static int IndexdPad = Pad / 3; // Smaller numbers
 
         /// <summary>
         /// The 'list' command implementation.
         /// </summary>
+        public ListAssetsCommand(IConsoleOutput outputHandle, IUserInput inputHandle, IAssetRepository assetRepo, IOfficeRepository officeRepo)
+            : base(outputHandle, inputHandle, assetRepo, officeRepo) { }
+
+
         public bool ListAllAssetsCommand(string cmdName, string[] cmdArgs)
         {
-            int count = Assets.GetAssets().Count();
-
-            if (count == 0)
+            if (Assets.Count == 0)
             {
                 OutputHandle.PutMessage("No assets in database.", IConsoleOutput.Color.GREEN);
+                return true;
             }
 
-            int pad = 16;
-            int pricePad = pad;
-            int idPad = pad / 3;
-            OutputHandle.PutMessage($"Listing all assets. There are currently {count} assets being tracked.");
+            // Used when scrolling
+            int pageSize = 20;
+            int totalPageNum = Assets.Count / pageSize;
+            int currentPageIndex = 0;
+
+            // Header
             OutputHandle.PutMessage(
-                "Id".PadRight(idPad) +
-                "Model".PadRight(pad) +
-                "Purchase Date".PadRight(pad) +
-                "Expiry Date".PadRight(pad) +
-                "Price".PadRight(pricePad) +
-                "Office Location".PadRight(pad) +
-                "Other info ...".PadRight(pad));
+                "Id".PadRight(IndexdPad) +
+                "Model".PadRight(Pad) +
+                "Purchase Date".PadRight(Pad) +
+                "Expiry Date".PadRight(Pad) +
+                "Price".PadRight(Pad) +
+                "Office Location".PadRight(Pad) +
+                "Other info ...".PadRight(Pad));
 
+            // Let user scroll up or down among the pages
+            // Loop until user is finished
+            string input = "";
+            bool notDone = true;
+            while(notDone)
+            {
+                ShowPage(pageSize, currentPageIndex);
+                OutputHandle.PutMessage($"Displaying page {currentPageIndex + 1} of {totalPageNum}.");
+                OutputHandle.PutMessage("Enter a number to go to that page. Type 'up' or 'down' to scroll up or down.");
 
-            foreach (Asset a in Assets.GetAssets()
-                                       .OrderBy(a => a.OfficeID)
-                                       .ThenBy(a => (a is Computer) ? 1 : 2) // Maybe a bit too "hacky"?
-                                       .ThenBy(a => a.PurchaseDate).Take(20))
+                input = InputHandle.GetEditableInputWithDefaultText( currentPageIndex==0 ? "down" : "" ).ToLower();
+
+                if(input == "down")
+                {
+                    if(currentPageIndex + 1 >= totalPageNum)
+                    {
+                        OutputHandle.PutMessage("No more assets. Aborting list.", IConsoleOutput.Color.GREEN);
+                        return true;
+                    } 
+                    else
+                    {
+                        currentPageIndex++;
+                    }
+                }
+                else if(input == "up")
+                {
+                    if(currentPageIndex == 0)
+                    {
+                        OutputHandle.PutMessage("You are already at the top page.", IConsoleOutput.Color.YELLOW);
+                    }
+                    else
+                    {
+                        currentPageIndex--;
+                    }
+                }
+                else if(int.TryParse(input, out int userSelectedPage))
+                {
+                    if(userSelectedPage > 0 && userSelectedPage < totalPageNum)
+                    {
+                        currentPageIndex = userSelectedPage - 1; // index is zero-based, but index in ui is not
+                    }
+                    else
+                    {
+                        OutputHandle.PutMessage("Invalid page.", IConsoleOutput.Color.YELLOW);
+                    }
+                }
+                else
+                {
+                    OutputHandle.PutMessage("Aborted.");
+                    notDone = false;
+                }
+            }
+            
+
+            return true;
+        }
+
+        private void ShowPage(int pageSize, int pageIndex)
+        {
+            IEnumerable<Asset> page = Assets.GetAssetsPaged(pageSize, pageIndex);
+
+            foreach (Asset a in page)
+                                       //.OrderBy(a => a.OfficeID)
+                                       //.ThenBy(a => (a is Computer) ? 1 : 2) // Maybe a bit too "hacky"?
+                                       //.ThenBy(a => a.PurchaseDate))
             {
                 IConsoleOutput.Color color = IConsoleOutput.Color.WHITE;
                 if (a.ExpiryDate < DateTime.Now || a.ExpiryDate < DateTime.Now.AddMonths(3)) // Passed expiry date or 3 months left
@@ -52,13 +119,13 @@ namespace MPEF.AssetTracker.Main.UIControllers
                 }
 
                 OutputHandle.PutMessage(
-                    a.AssetID.ToString().PadRight(idPad) +
-                    a.ModelName.PadRight(pad) +
-                    a.PurchaseDate.ToShortDateString().PadRight(pad) +
-                    a.ExpiryDate.ToShortDateString().PadRight(pad) +
+                    a.AssetID.ToString().PadRight(IndexdPad) +
+                    a.ModelName.PadRight(Pad) +
+                    a.PurchaseDate.ToShortDateString().PadRight(Pad) +
+                    a.ExpiryDate.ToShortDateString().PadRight(Pad) +
                     //a.Price.ToString().PadRight(pricePad) +
-                    CurrencyConverter.PriceToString(a.Price, Offices.GetOffice(a.OfficeID).OfficeLocalCulture).PadRight(pricePad) +
-                    Offices.GetOffice(a.OfficeID).ToString().PadRight(pad),
+                    CurrencyConverter.PriceToString(a.Price, Offices.GetOffice(a.OfficeID).OfficeLocalCulture).PadRight(Pad) +
+                    Offices.GetOffice(a.OfficeID).ToString().PadRight(Pad),
                     color,
                     newLine: false);
 
@@ -66,21 +133,19 @@ namespace MPEF.AssetTracker.Main.UIControllers
                 {
                     case Computer computer:
                         OutputHandle.PutMessage(
-                            computer.OperatingSystem.PadRight(pad) +
-                            computer.RAM.PadRight(pad) +
-                            computer.Processor.PadRight(pad),
+                            computer.OperatingSystem.PadRight(Pad) +
+                            computer.RAM.PadRight(Pad) +
+                            computer.Processor.PadRight(Pad),
                             color);
                         break;
                     case Cellphone phone:
                         OutputHandle.PutMessage(
-                            phone.PhoneOperator.PadRight(pad) +
-                            phone.PhoneNumber.PadRight(pad),
+                            phone.PhoneOperator.PadRight(Pad) +
+                            phone.PhoneNumber.PadRight(Pad),
                             color);
                         break;
                 }
             }
-
-            return true;
         }
     }
 }

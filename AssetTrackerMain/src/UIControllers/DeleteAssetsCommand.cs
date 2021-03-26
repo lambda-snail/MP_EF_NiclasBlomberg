@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace MPEF.AssetTracker.Main.UIControllers
 {
+    /// <summary>
+    /// The 'delete' command implementation.
+    /// </summary>
     public class DeleteAssetsCommand : AssetTrackerCommandBase
     {
         public DeleteAssetsCommand(IConsoleOutput outputHandle, IUserInput inputHandle, IAssetRepository assetRepo, IOfficeRepository officeRepo)

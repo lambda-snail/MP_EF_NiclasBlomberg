@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace MPEF.AssetTracker.Main.UIControllers
 {
+    /// <summary>
+    /// The 'update' command implementation.
+    /// </summary>
     public class UpdateAssetsCommand : AssetTrackerCommandBase
     {
         public UpdateAssetsCommand(IConsoleOutput outputHandle, IUserInput inputHandle, IAssetRepository assetRepo, IOfficeRepository officeRepo)

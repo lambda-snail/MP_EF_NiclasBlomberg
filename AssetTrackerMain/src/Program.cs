@@ -14,13 +14,10 @@ namespace MPEF.AssetTracker
     {
         private static AssetTrackerDbContext _database;
 
-        //public static string ConnectionString = "Server = (localdb)\\MSSQLLocalDB; Database = AssetTracker.DB; Integrated Security = True";
         static void Main(string[] args)
         {
             // EF Core stuff
-            //_database = new AssetTrackerDbContext();
             var factory = new AssetTrackerContextFactory();
-
             _database = factory.CreateDbContext(null);
             _database.Database.EnsureCreated();
             LoadMockData();
