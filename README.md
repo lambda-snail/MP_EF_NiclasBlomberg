@@ -4,7 +4,33 @@ The second mini project for Lexicon: Refactoring the asset tracker from MP1 to w
 
 This mini project also uses some code from my console UI project, which can be found here https://github.com/lambda-snail/SCLI.
 
-# Changes
+## Requirements
+
+The project uses the NuGet package "Readline".
+
+# Minimal Manual
+
+* In the main menu, type 'help' to see available commands.
+
+* By typing a part of a command and pressing tab, each press cycles through available commands that match the text.
+
+* The first time the application starts the example data will load. It can take a few seconds before the prompt displays.
+
+## list and list-not-expired
+
+* The list command is an alias for list-all, which lists all assets currently in the system. The assets are color-coded as in MP1.
+
+* The list-not-expired command will list all assets that have not yet expired. Assets will still be color-coded as usual.
+
+* Since the example dataset is large, the list family of commands display a page of a few assets at once. They allow allow the user to scroll through the pages by typing "up" or "down".
+
+* It is also possible to go directly to a page py typing in the number of that page.
+
+## reports
+
+* Basic statistics about the system can be displayed by using this command.
+
+# Changes since MP1
 
 The following things have changed from the MP1 version:
 
