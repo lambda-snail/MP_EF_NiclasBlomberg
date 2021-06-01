@@ -2,8 +2,6 @@
  
 The second mini project for Lexicon: Refactoring the asset tracker from MP1 to work with EF Core.
 
-This mini project also uses some code from my console UI project, which can be found here https://github.com/lambda-snail/SCLI.
-
 ## Requirements
 
 The project uses the NuGet package "Readline". (https://www.nuget.org/packages/ReadLine/)
